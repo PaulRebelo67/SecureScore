@@ -1,0 +1,9 @@
+{
+  "generator-teams": {
+    "promptValues": {
+      "developer": "Empired Limited"
+    },
+    "libraryName": "secureScore",
+    "generator-version": "3.0.0-preview3"
+  }
+}

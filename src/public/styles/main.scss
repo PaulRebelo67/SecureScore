@@ -1,0 +1,96 @@
+body {
+	font-family: sans-serif;
+
+	max-width: 80vw;
+	margin: 0 auto;
+}
+
+.l-header {
+	display: flex;
+
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 5em;
+	padding: 1em;
+
+	align-content: space-between;
+	align-items: stretch;
+	justify-content: space-between;
+
+	h1 {
+		box-sizing: border-box;
+		padding-left: 1.5em;
+		padding-right: 1.5em;
+
+	}
+}
+
+.l-article {
+	margin: 3em 2em;
+}
+
+.l-title {
+	flex-grow: 1;
+}
+
+img.logo {
+	width: 100%;
+	min-width: 76px;
+	height: auto;
+}
+
+.ui-provider {
+	background-color: lightgrey;
+}
+
+.ui-flex {
+	background-color: lightgrey;
+}
+
+.nav-ul {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	list-style: none;
+}
+  
+.nav-li {
+	padding-right: 10px;
+}
+.large {
+	font-size:xx-large;
+	text-align: center;
+}
+.scoreText {
+	text-align: center;
+}
+.noBullets {
+	list-style-type:none;
+	padding:0;
+}
+.label1 {
+	font-weight: 600;
+}
+.recoButton {
+	float:right;
+	height: 25px;
+	color: white;
+	background-color: black;
+}
+.oneThird {
+	flex-basis: 33% !important;
+}
+.circle-black-icon {
+    background: #000;
+    color: #fff;
+    padding: 4px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+.circle-black-text {
+    background: #000;
+    color: #fff;
+    padding: 1px 7px;
+    border-radius: 50%;
+    font-size: 12px;
+}
