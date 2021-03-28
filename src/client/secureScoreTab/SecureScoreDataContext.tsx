@@ -26,7 +26,7 @@ export interface iSecureScoreContextData {
     userInfo: iUserInfo | undefined;
     scores: iScores | undefined;
     tests: iTest[];
-    fetchData: (upn: string) => void;
+    fetchData: () => void;
 }
 
 export interface iData {
@@ -54,7 +54,7 @@ export const userContextDefaultValue: iSecureScoreContextData = {
     userInfo: { displayName: "", userPrincipalName: "", imagePath: "", jobTitle: "", contactNumber: "", userType: "" },
     scores: { yourScore: 0, teamScore: 0, orgScore: 0 },
     tests: [],
-    fetchData: (upn: string) => null
+    fetchData: () => null
 };
 
 export const SecureScoreContext = React.createContext<iSecureScoreContextData>(userContextDefaultValue);

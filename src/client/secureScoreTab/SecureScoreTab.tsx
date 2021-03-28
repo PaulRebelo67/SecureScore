@@ -1,22 +1,22 @@
 import * as React from "react";
 import { Provider, Flex, Segment, Divider } from "@fluentui/react-northstar";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { useTeams } from "msteams-react-base-component";
 import * as microsoftTeams from "@microsoft/teams-js";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Compare } from "./Compare";
 import { Scores } from "./Scores";
-import { iUserInfo, iScores, iTest, iSecureScoreContextData } from "./SecureScoreDataContext";
+import { iUserInfo, iScores, iTest, iSecureScoreContextData, SecureScoreContext, userContextDefaultValue } from "./SecureScoreDataContext";
 
-function useSecureScoreContextValue(upnx: any): iSecureScoreContextData {
+function useSecureScoreContextValue(): iSecureScoreContextData {
     const [isLoading, setIsLoading] = useState(false);
     const [scores, setScores] = useState<iScores | undefined>(undefined);
     const [tests, setTests] = useState<iTest[]>([]);
     const [userInfo, setUserInfo] = useState<iUserInfo | undefined>(undefined);
 
-    const fetchData = useCallback((upnx) => {
+    const fetchData = useCallback(() => {
         let userDashBoardDataURL: any = process.env.EP_USER_DASHBOARD;
-        userDashBoardDataURL = userDashBoardDataURL.replace("{upn}", upnx);
+        userDashBoardDataURL = userDashBoardDataURL.replace("{upn}", process.env.EP_NOTINTEAMS_UPN);
 
         setIsLoading(true);
         fetch(userDashBoardDataURL)
@@ -55,32 +55,31 @@ function useSecureScoreContextValue(upnx: any): iSecureScoreContextData {
     return { isLoading, userInfo, scores, tests, fetchData };
 }
 
-const Home = (props) => {
+const Home = () => {
     const [{ inTeams, theme, context }] = useTeams();
-    // const [scores, setScores] = useState({ yourScore: 0, teamScore: 0, orgScore: 0 });
-
-    const secureScoreContextValue = useSecureScoreContextValue(process.env.EP_NOTINTEAMS_UPN);
 
     return (
         <>
-            <Provider theme={theme}>
-                <Scores />
-                <Flex gap="gap.small" padding="padding.medium">
-                    <Flex.Item size="size.half">
-                        <Segment>
-                            <div>Person Card</div>
-                        </Segment>
-                    </Flex.Item>
-                </Flex>
-                <Flex gap="gap.small" padding="padding.medium">
-                    <Flex.Item size="size.half">
-                        <Segment>
-                            <div>Security Score Metric...</div>
-                        </Segment>
-                    </Flex.Item>
-                    <Flex.Item size="size.half"></Flex.Item>
-                </Flex>
-            </Provider>
+            <SecureScoreContext.Provider value={ userContextDefaultValue }>
+                <Provider theme={theme}>
+                    <Scores />
+                    <Flex gap="gap.small" padding="padding.medium">
+                        <Flex.Item size="size.half">
+                            <Segment>
+                                <div>Person Card</div>
+                            </Segment>
+                        </Flex.Item>
+                    </Flex>
+                    <Flex gap="gap.small" padding="padding.medium">
+                        <Flex.Item size="size.half">
+                            <Segment>
+                                <div>Security Score Metric...</div>
+                            </Segment>
+                        </Flex.Item>
+                        <Flex.Item size="size.half"></Flex.Item>
+                    </Flex>
+                </Provider>
+            </SecureScoreContext.Provider>
         </>
     );
 };
@@ -91,6 +90,11 @@ const Home = (props) => {
 export const SecureScoreTab = () => {
     const [{ inTeams, theme, context }] = useTeams();
     const [entityId, setEntityId] = useState<string | undefined>();
+    const { fetchData } = useContext(SecureScoreContext);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     useEffect(() => {
         if (inTeams === true) {
@@ -98,15 +102,7 @@ export const SecureScoreTab = () => {
         }
     }, [inTeams]);
 
-    /**
-    useEffect(() => {
-        if (context) {
-            fetchData(context.userPrincipalName);
-        } else {
-            fetchData("Andreas.Nerlich@empired.com");
-        }
-    }, [context]);
-     */
+    const secureScoreContextValue = useSecureScoreContextValue();
 
     /**
      * The render() method to create the UI of the tab
