@@ -1,9 +1,9 @@
-import * as React from "react";
+import { createContext } from "react";
 
 export interface iScores {
-    yourScore: number,
-    teamScore: number,
-    orgScore: number,
+    userSecurityScore: number,
+    teamSecurityScore: number,
+    orgSecurityScore: number,
 }
 
 export interface iTest {
@@ -21,14 +21,13 @@ export interface iUserInfo {
     userType: string
 }
 
-export interface iSecureScoreContextData {
-    isLoading: boolean;
-    userInfo: iUserInfo | undefined;
-    scores: iScores | undefined;
-    tests: iTest[];
-    fetchData: () => void;
+export interface iData {
+    userInfo: iUserInfo,
+    scores: iScores,
+    tests: iTest[]
 }
 
+/**
 export interface iData {
     displayName: string,
     userPrincipalName: string,
@@ -48,13 +47,33 @@ export interface iData {
     teamSecurityScore: number,
     orgSecurityScore: number
 }
+*/
 
-export const userContextDefaultValue: iSecureScoreContextData = {
-    isLoading: false,
-    userInfo: { displayName: "", userPrincipalName: "", imagePath: "", jobTitle: "", contactNumber: "", userType: "" },
-    scores: { yourScore: 0, teamScore: 0, orgScore: 0 },
-    tests: [],
-    fetchData: () => null
+const contextDefaultValue: iData = {
+    userInfo: {
+        displayName: "Paul Rebelo",
+        userPrincipalName: "paul.rebelo@empired.com",
+        contactNumber: "",
+        jobTitle: "",
+        imagePath: "",
+        userType: ""
+    },
+    scores: {
+        userSecurityScore: 0,
+        teamSecurityScore: 0,
+        orgSecurityScore: 0
+    },
+    tests: [
+        { title: "Capable", status: true, tag: "" },
+        { title: "MFA Registered", status: false, tag: "" },
+        { title: "Registered", status: true, tag: "" },
+        { title: "Auth Methods", status: true, tag: "" },
+        { title: "Maximum Device Limit", status: true, tag: "" },
+        { title: "Enabled", status: true, tag: "" },
+        { title: "Mobile Version", status: true, tag: "" },
+        { title: "Microsoft Authenticator App version", status: true, tag: "" },
+        { title: "Acceptible use policies reviewed", status: true, tag: "" }
+    ]
 };
 
-export const SecureScoreContext = React.createContext<iSecureScoreContextData>(userContextDefaultValue);
+export const SecureScoreContext = createContext<iData | null>(contextDefaultValue);
